@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wechat.bills.mapper.ChangeDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.wechat.bills.entity.ChangeDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="wechat_id" property="wechatId" jdbcType="VARCHAR" />
+    <result column="money" property="money" jdbcType="DECIMAL" />
+    <result column="balance" property="balance" jdbcType="DECIMAL" />
+    <result column="balance_source" property="balanceSource" jdbcType="VARCHAR" />
+    <result column="transaction_type" property="transactionType" jdbcType="INTEGER" />
+    <result column="transaction_time" property="transactionTime" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.wechat.bills.entity.ChangeDetail" extends="BaseResultMap" >
+    <result column="order_id" property="orderId" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, wechat_id, money, balance, balance_source, transaction_type, transaction_time, 
+    remark
+  </sql>
+  <sql id="Blob_Column_List" >
+    order_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from change_detail
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from change_detail
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wechat.bills.entity.ChangeDetail" useGeneratedKeys="true" keyProperty="id" >
+    insert into change_detail (wechat_id, money, balance, 
+      balance_source, transaction_type, transaction_time, 
+      remark, order_id)
+    values (#{wechatId,jdbcType=VARCHAR}, #{money,jdbcType=DECIMAL}, #{balance,jdbcType=DECIMAL}, 
+      #{balanceSource,jdbcType=VARCHAR}, #{transactionType,jdbcType=INTEGER}, #{transactionTime,jdbcType=TIMESTAMP}, 
+      #{remark,jdbcType=VARCHAR}, #{orderId,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wechat.bills.entity.ChangeDetail" useGeneratedKeys="true" keyProperty="id" >
+    insert into change_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="wechatId != null" >
+        wechat_id,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="balance != null" >
+        balance,
+      </if>
+      <if test="balanceSource != null" >
+        balance_source,
+      </if>
+      <if test="transactionType != null" >
+        transaction_type,
+      </if>
+      <if test="transactionTime != null" >
+        transaction_time,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="wechatId != null" >
+        #{wechatId,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="balance != null" >
+        #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="balanceSource != null" >
+        #{balanceSource,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionType != null" >
+        #{transactionType,jdbcType=INTEGER},
+      </if>
+      <if test="transactionTime != null" >
+        #{transactionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wechat.bills.entity.ChangeDetail" >
+    update change_detail
+    <set >
+      <if test="wechatId != null" >
+        wechat_id = #{wechatId,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="balance != null" >
+        balance = #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="balanceSource != null" >
+        balance_source = #{balanceSource,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionType != null" >
+        transaction_type = #{transactionType,jdbcType=INTEGER},
+      </if>
+      <if test="transactionTime != null" >
+        transaction_time = #{transactionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wechat.bills.entity.ChangeDetail" >
+    update change_detail
+    set wechat_id = #{wechatId,jdbcType=VARCHAR},
+      money = #{money,jdbcType=DECIMAL},
+      balance = #{balance,jdbcType=DECIMAL},
+      balance_source = #{balanceSource,jdbcType=VARCHAR},
+      transaction_type = #{transactionType,jdbcType=INTEGER},
+      transaction_time = #{transactionTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
+      order_id = #{orderId,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+   <!--批量插入-->
+  <insert id="insertList" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id" >
+    INSERT INTO change_detail (
+    wechat_id,
+    money,
+    balance,
+    balance_source,
+    transaction_type,
+    transaction_time,
+    remark,
+    order_id
+    )
+    VALUES
+    <foreach collection="list" item="item" index="index" open=""
+             close="" separator=",">
+      (
+      #{item.wechatId,jdbcType=VARCHAR}, #{item.money,jdbcType=DECIMAL},
+      #{item.balance,jdbcType=DECIMAL},
+      #{item.balanceSource,jdbcType=VARCHAR}, #{item.transactionType,jdbcType=INTEGER},
+      #{item.transactionTime,jdbcType=TIMESTAMP}, #{item.remark,jdbcType=VARCHAR},
+      #{item.orderId,jdbcType=VARCHAR}
+      )
+    </foreach>
+    ON DUPLICATE KEY UPDATE
+    wechat_id = VALUES(wechat_id),
+    money= VALUES(money),
+    balance= VALUES(balance),
+    balance_source= VALUES(balance_source),
+    transaction_type= VALUES(transaction_type),
+    transaction_time= VALUES(transaction_time),
+    remark= VALUES(remark),
+    order_id= VALUES(order_id)
+
+  </insert>
+
+</mapper>

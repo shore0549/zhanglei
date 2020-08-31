@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>UserMapper</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .mid_box{
+            width: 800px;
+            height: 800px;
+            background-color: #130c0c;
+            position: fixed;    
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            border-radius: 20px;
+        }
+        .title_mid{
+            font-size: 40px;
+            text-align: center;
+            height: 50px;
+            color: #167a6f;
+            line-height: 50px;
+            margin-top: -50px;
+        }
+        .search_box,.btn{
+            margin-top: 100px;
+            margin-left: 150px;
+        }
+        ul li{
+            margin-top: 20px;
+            color: #167a6f;
+        }
+        ul li input{
+            width: 500px;
+            height: 30px;
+            text-indent: 12px;
+            background-color: rgba(238, 255, 253, 0.9);
+        }
+        input::-webkit-input-placeholder{
+            color: rgba(red, green, blue, .5);
+            font-size: 16px;
+        }
+        .wechartId{
+            width: 370px;
+        }
+        #getBill,#ckeckBtn, #goesBtn,ul li input{
+            border:0;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        #goesBtn{
+            margin-left: 150px;
+            margin-top: 60px;
+            width: 240px;
+            height: 40px;
+            background-color: rgb(26, 214, 189);
+            cursor: pointer;
+            float: left;
+            
+        }
+        #ckeckBtn{
+            width: 120px;
+            height: 30px;
+            margin-left: 10px;
+            font-size: 13px;
+            background-color: rgba(26, 214, 189,0.9);
+            cursor: pointer;
+            
+        }
+        #getBill{
+            width: 240px;
+            height: 40px;
+            margin-top: 60px;
+            margin-left: 20px;
+            background-color: rgb(26, 214, 189);
+            cursor: pointer;
+            display: none;
+            float: left;
+        }
+     
+    </style>
+</head>     
+<body>
+    <div class="mid_box">
+        <div class="title_mid">微信账单下载</div>
+        <ul class="search_box">
+            <li><p> 微信账号：</p><input type="text" class="wechartId" placeholder="请输入微信号"><button id="ckeckBtn">验证账号</button></li>
+            <li><p>export_key：</p><input type="text" class="exportKey" placeholder="请输入有效的export_key"></li>
+            <li><p>userroll_encryption：</p><input type="text" class="userrollEncryption" placeholder="请输入有效的userroll_encryption"></li>
+            <li><p>userroll_pass_ticket:</p><input type="text" class="userrollPassTicket" placeholder="请输入有效的userroll_pass_ticket"></li>
+            <li><p>balanceuserroll_encryption：</p><input type="text" class="balanceuserrollEncryption" placeholder="请输入有效的balanceuserroll_encryption"></li>
+            <li><p>expire: </p><input type="text" class="expire" placeholder="请输入有效的expire"></li>
+        </ul>
+        <button id="goesBtn">储存账号</button>
+        <button id="getBill">下载账单到Excel</button>
+    </div>
+  
+</body>
+<!-- <script src="jquery.min.js" type="text/javascript"></script> -->
+<script src="jquery.js" type="text/javascript"></script>
+<script src="base64.js"></script>
+<script type="text/javascript">
+    var url = document.location.origin;
+    console.log("url路径是"+url.toString());
+    //点击储存账号
+    $("#goesBtn").click(function(){
+        var wechatId = $(".wechartId").val();
+        var exportKey = $(".exportKey").val();
+        var userrollEncryption=$(".userrollEncryption").val();
+        var userrollPassTicket = $(".userrollPassTicket").val();
+        var balanceuserrollEncryption = $(".balanceuserrollEncryption").val();
+        var DataTime= $(".expire").val();
+        var expire=GMTToStr(DataTime);
+        console.log(expire);
+        test(wechatId,exportKey,userrollEncryption,userrollPassTicket,balanceuserrollEncryption,expire);
+        $("#getBill").css('display','inline');
+    });
+
+    //点击验证账号是否有效
+    $("#ckeckBtn").click(function(){
+        var wechatId = $(".wechartId").val();
+        chekTrue(wechatId);
+    });
+    
+    //点击下载账单到Excel
+    $("#getBill").click(function(){
+        var wechatId = $(".wechartId").val();
+        var exportKey = $(".exportKey").val();
+        var userrollEncryption=$(".userrollEncryption").val();
+        var userrollPassTicket = $(".userrollPassTicket").val();
+        var balanceuserrollEncryption = $(".balanceuserrollEncryption").val();
+        getBills(wechatId,exportKey,userrollEncryption,userrollPassTicket,balanceuserrollEncryption);
+    });
+    // 写入账号
+    function test(wechatId,exportKey,userrollEncryption,userrollPassTicket,balanceuserrollEncryption,expire){
+        $.ajax({
+            type:"POST",
+            contentType: 'application/json',
+            url:"http://10.10.101.9:8080/wechat/saveKeys",
+             //返回数据的格式
+            dataType: "json",
+            //提交的数据   该参数为属性值类型的参数
+            data:JSON.stringify({
+                "wechatId": wechatId,
+                "exportKey": exportKey,
+                "userrollEncryption": userrollEncryption,
+                "userrollPassTicket":userrollPassTicket,
+                "balanceuserrollEncryption":balanceuserrollEncryption,
+                "expire": expire,
+            }),
+            success:function(data){
+                if(data.code==0){
+                    alert(data.msg);
+                    console.log(data);
+                    $("#getBill").css('display','block');
+                } 
+            },
+            error: function(){
+                alert("请求失败")
+            }         
+        });
+    }
+   
+    // 验证账号是否有效,是否存在,时限是否过期
+    function chekTrue(wechatId){
+        $.ajax({
+            type:"POST",    
+            contentType: 'application/json',
+            url:"http://10.10.101.9:8080/wechat/getLastKey",
+            dataType:"json",   
+            data:JSON.stringify({"wechatId":wechatId}),
+            success:function(data){
+                if(data.code==0){
+                    // alert(data.msg);
+                    var newData=JSON.parse(data.data);
+                    console.log(newData);
+                    if(newData.expire){
+                        var expireTime=newData.expire+1000*60*60;
+                        var nowTime=new Date().getTime();
+                        console.log(newData.expire-nowTime);
+                        if(expireTime<=nowTime){
+                            alert("已经超过账号的expire时间,请重新获取有效的数据");
+                        }  
+                        else{
+                            alert("账号的expire时间还在有效期内,您可以进行其他操作");
+                            $(".exportKey").val(newData.exportKey);
+                            $(".userrollEncryption").val(newData.userrollEncryption);
+                            $(".userrollPassTicket").val(newData.userrollPassTicket);
+                            $(".balanceuserrollEncryption").val(newData.balanceuserrollEncryption);
+                            var newDate = new Date(newData.expire);
+                            $(".expire").val(newDate.toGMTString());
+                            $("#getBill").css('display','block');
+                            
+                        }
+                    }
+                }else if(data.code==500){
+                    alert(data.msg)
+                }
+            },
+            //调用出错执行的函数
+            error: function(){
+                alert("查询失败")
+            }         
+        });
+    }
+  
+    function getBills(wechatId,exportKey,userrollEncryption,userrollPassTicket,balanceuserrollEncryption){
+        var b = new Base64(); 
+        exportKey=b.encode(exportKey);
+        userrollEncryption= b.encode(userrollEncryption);
+        userrollPassTicket= b.encode(userrollPassTicket);
+        balanceuserrollEncryption= b.encode(balanceuserrollEncryption);
+        var dataUrl=`http://localhost:8080/wechat/saveBillsToExcel?wechatId=${wechatId}&exportKey=${exportKey}&userrollEncryption=${userrollEncryption}&userrollPassTicket=${userrollPassTicket}&balanceuserrollEncryption=${balanceuserrollEncryption}`
+        window.open(dataUrl);
+    }
+    //转换时间格式
+    function GMTToStr(time){
+        let date = new Date(time)
+        let Str=date.getFullYear() + '-' +
+        (date.getMonth() + 1) + '-' + 
+        date.getDate() + ' ' + 
+        (date.getHours()-8) + ':' + 
+        date.getMinutes() + ':' + 
+        date.getSeconds()
+        return Str
+    }
+    
+</script>
+</html>

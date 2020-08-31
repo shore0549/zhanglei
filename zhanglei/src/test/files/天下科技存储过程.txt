@@ -1,0 +1,31 @@
+BEGIN
+   DECLARE orderId INT DEFAULT 0;
+ DECLARE CONTINUE HANDLER FOR SQLEXCEPTION set _err='1';  START TRANSACTION;
+ 
+  update t_user_wallet set balance=balance -(p_num*p_price),frozen_balance=frozen_balance + (p_num*p_price) where id=p_walletId;
+ 
+ 
+  insert into t_plu_order(uid,cid,plu_id,plu_number,order_time,deliver_address,deliver_phone,deliver_name,deliver_rmk)
+  values(p_uid,(select id from t_cagent where cagent=p_cagentName),p_pluId,p_num,now(),p_deliverAddress,p_deliverPhone,p_deliverName,p_deliverRmk);
+ 
+ select max(id) into orderId from t_plu_order;  
+  insert into t_user_wallet_log(uid,type,wtype,amount,old_money,new_money,uptime,upuid,rmk)
+  values(p_uid,p_type,p_wtype,p_price*p_num,p_balance,p_balance -(p_num*p_price),now(),p_uid,'商品兑换');  
+ UPDATE t_plu_inventory SET num=num-p_num,freeze_num=freeze_num+p_num WHERE pluid=p_pluId;  
+ INSERT INTO t_plu_inventory_log (cid,pluid,orderno,num,type,t_type,uptime,upuid)
+ VALUES((select id from t_cagent where cagent=p_cagentName),p_pluId,orderId,p_num,'OUT','6',now(),p_uid); IF _err = '1' THEN
+ ROLLBACK;
+ELSE
+ COMMIT;
+END IF;
+END
+
+
+
+参数部分：
+IN p_balance FLOAT,IN p_walletId INT,IN p_price FLOAT,IN p_num INT,IN p_uid INT,IN p_cagentName VARCHAR(20),IN p_pluId INT,IN p_deliverAddress VARCHAR(100),IN p_deliverPhone VARCHAR(15),IN p_deliverName VARCHAR(15),IN p_type VARCHAR(5),IN p_wtype VARCHAR(2),IN p_deliverRmk VARCHAR(200),OUT _err VARCHAR(20)
+
+
+
+
+输入参数：9999999.0,23,2000.0,'1',564949,'bl1','134','北京市辖区东城区撒的发生的','13688759965','大象','OUT','1','爽肤水',error

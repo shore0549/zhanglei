@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wechat.bills.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.wechat.bills.entity.User" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="wechat_id" property="wechatId" jdbcType="VARCHAR" />
+    <result column="export_key" property="exportKey" jdbcType="VARCHAR" />
+    <result column="userroll_encryption" property="userrollEncryption" jdbcType="VARCHAR" />
+    <result column="userroll_pass_ticket" property="userrollPassTicket" jdbcType="VARCHAR" />
+    <result column="balanceuserroll_encryption" property="balanceuserrollEncryption" jdbcType="VARCHAR" />
+    <result column="expire" property="expire" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, wechat_id, export_key, userroll_encryption, userroll_pass_ticket, balanceuserroll_encryption, 
+    expire
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+
+  <insert id="insert" parameterType="com.wechat.bills.entity.User" useGeneratedKeys="true" keyProperty="id" >
+    insert into user (wechat_id, export_key, userroll_encryption,
+      userroll_pass_ticket, balanceuserroll_encryption, 
+      expire)
+    values (#{wechatId,jdbcType=VARCHAR}, #{exportKey,jdbcType=VARCHAR}, #{userrollEncryption,jdbcType=VARCHAR}, 
+      #{userrollPassTicket,jdbcType=VARCHAR}, #{balanceuserrollEncryption,jdbcType=VARCHAR}, 
+      #{expire,jdbcType=TIMESTAMP})
+  </insert>
+
+
+  <insert id="insertSelective" parameterType="com.wechat.bills.entity.User" useGeneratedKeys="true" keyProperty="id" >
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="wechatId != null" >
+        wechat_id,
+      </if>
+      <if test="exportKey != null" >
+        export_key,
+      </if>
+      <if test="userrollEncryption != null" >
+        userroll_encryption,
+      </if>
+      <if test="userrollPassTicket != null" >
+        userroll_pass_ticket,
+      </if>
+      <if test="balanceuserrollEncryption != null" >
+        balanceuserroll_encryption,
+      </if>
+      <if test="expire != null" >
+        expire,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="wechatId != null" >
+        #{wechatId,jdbcType=VARCHAR},
+      </if>
+      <if test="exportKey != null" >
+        #{exportKey,jdbcType=VARCHAR},
+      </if>
+      <if test="userrollEncryption != null" >
+        #{userrollEncryption,jdbcType=VARCHAR},
+      </if>
+      <if test="userrollPassTicket != null" >
+        #{userrollPassTicket,jdbcType=VARCHAR},
+      </if>
+      <if test="balanceuserrollEncryption != null" >
+        #{balanceuserrollEncryption,jdbcType=VARCHAR},
+      </if>
+      <if test="expire != null" >
+        #{expire,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wechat.bills.entity.User" >
+    update user
+    <set >
+      <if test="wechatId != null" >
+        wechat_id = #{wechatId,jdbcType=VARCHAR},
+      </if>
+      <if test="exportKey != null" >
+        export_key = #{exportKey,jdbcType=VARCHAR},
+      </if>
+      <if test="userrollEncryption != null" >
+        userroll_encryption = #{userrollEncryption,jdbcType=VARCHAR},
+      </if>
+      <if test="userrollPassTicket != null" >
+        userroll_pass_ticket = #{userrollPassTicket,jdbcType=VARCHAR},
+      </if>
+      <if test="balanceuserrollEncryption != null" >
+        balanceuserroll_encryption = #{balanceuserrollEncryption,jdbcType=VARCHAR},
+      </if>
+      <if test="expire != null" >
+        expire = #{expire,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wechat.bills.entity.User" >
+    update user
+    set wechat_id = #{wechatId,jdbcType=VARCHAR},
+      export_key = #{exportKey,jdbcType=VARCHAR},
+      userroll_encryption = #{userrollEncryption,jdbcType=VARCHAR},
+      userroll_pass_ticket = #{userrollPassTicket,jdbcType=VARCHAR},
+      balanceuserroll_encryption = #{balanceuserrollEncryption,jdbcType=VARCHAR},
+      expire = #{expire,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByWechat" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where wechat_id = #{wechatId,jdbcType=VARCHAR} order by id desc limit 1
+  </select>
+
+
+
+  <!--插入或者更新-->
+  <insert id="insertOrUpdateOne" parameterType="com.wechat.bills.entity.User" >
+    <!--<selectKey keyProperty="id" resultType="int" order="AFTER" >-->
+      <!--SELECT LAST_INSERT_ID()-->
+    <!--</selectKey>-->
+
+
+  <!--INSERT INTO user (-->
+  <!--`wechat_id`,-->
+  <!--`export_key`,-->
+  <!--`userroll_encryption`,-->
+  <!--`userroll_pass_ticket`,-->
+  <!--`balanceuserroll_encryption`,-->
+  <!--`expire`-->
+  <!--)-->
+  <!--VALUES-->
+  <!--(-->
+   <!--#{wechatId,jdbcType=VARCHAR}, #{exportKey,jdbcType=VARCHAR}, #{userrollEncryption,jdbcType=VARCHAR},-->
+      <!--#{userrollPassTicket,jdbcType=VARCHAR}, #{balanceuserrollEncryption,jdbcType=VARCHAR},#{expire,jdbcType=TIMESTAMP}-->
+  <!--)-->
+  <!--on DUPLICATE key UPDATE wechat_id = VALUES(wechat_id),export_key=VALUES(export_key),-->
+  <!--userroll_encryption=VALUES(userroll_encryption),userroll_pass_ticket=VALUES(userroll_pass_ticket),-->
+  <!--balanceuserroll_encryption=VALUES(balanceuserroll_encryption),expire=VALUES(expire)-->
+
+
+  </insert>
+
+
+  <insert id="unBelieveable" parameterType="com.wechat.bills.entity.User" useGeneratedKeys="true" keyProperty="id" >
+    replace into user (wechat_id, export_key, userroll_encryption,
+      userroll_pass_ticket, balanceuserroll_encryption,
+      expire)
+    values (#{wechatId,jdbcType=VARCHAR}, #{exportKey,jdbcType=VARCHAR}, #{userrollEncryption,jdbcType=VARCHAR},
+      #{userrollPassTicket,jdbcType=VARCHAR}, #{balanceuserrollEncryption,jdbcType=VARCHAR},
+      #{expire,jdbcType=TIMESTAMP})
+  </insert>
+</mapper>

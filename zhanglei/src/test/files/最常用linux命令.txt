@@ -1,0 +1,80 @@
+﻿1，根据名称查看线程
+ps -ef|grep java
+结果中可以看到该线程的pid
+
+杀掉进程kill -9 3090 
+
+2，根据pid查看端口,或者根据端口查看pid都可以用下面命令
+netstat -nltp|grep 8080或者pid
+
+也可以使用以下命令，但是没有上面的好
+netstat -apn|grep 8080或者pid
+
+
+3,查看日志
+vi,  less ,more.
+其中 tail -f 和less最常用。 -f表示follow跟踪最新的内容这个非常实用！！！
+小写的n向上查找，大写N向下查找。
+大写G向下go
+/ 和？都是匹配模糊搜索
+
+
+tail -fn200 catalina.out  查看最后200行的日志
+所有应用（比如nginx）的日志默认路径在：/var/log  下面。
+
+
+查看环境变量：echo $JAVA_HOME
+
+
+3.5 没有权限执行sh start.sh
+# chmod 777 *.sh
+
+3.6启动某个服务(centos系统可以下载已经编译好的rpm包)
+service nginx start
+
+3.7查看某个文件的路径：
+whereis nginx
+
+
+
+4，rm -r 递归删除文件夹     mv修改文件名
+cp -r递归复制文件夹
+
+6,
+在当前目录下所有.cpp文件
+ find . -name "*.cpp"    不需要双引号也行
+
+5,超级有用
+查看系统中有哪些别名命令 alias 
+比如卓望的plog命令查看日志系统。
+  history查看你所有用过的命令
+
+
+6, 压缩文件里面查找关键字
+zcat *12-14-00* | grep -A 30 ActBatchOrderGDBossJobHandle | grep 13527852855    
+ 在文件名包含12-14-00的文件里面查找ActBatchOrderGDBossJobHandle，然后再在它的结果里面查找13527852855
+
+
+7,在当前目录的所有文件里面查找qrymobilelocalresp关键字。 把grep改成zgrep也行
+grep 'qrymobilelocalresp' ./*
+
+
+8, df 查看磁盘满
+
+9, 查看空闲内存 free -m
+
+10,netstat -ntpl|grep 8761 查看端口对应的线程id
+
+11,http://man.linuxde.net 最全的在线手册
+
+12,使用镜像nginx:latest，以后台模式启动一个容器,将容器的8761端口映射到主机的8761端口,并将容器命名为mynginx
+docker run -d -p 8761:8761 --name xss sky-service-registry 
+或者
+docker run --name mynginx -d nginx:latest
+
+13,远程登录某个端口,比如登录flume向它的源发送数据。先ping一下再用telnet
+telnet localhost 44444
+
+
+14,linux下面模拟post请求
+curl -X POST --header 'Content-Type:application/x-www-form-urlencoded' --header 'referer:http://192.168.0.228:82' -d '{"name":"xss","age":"30"}' 'http://192.168.0.3:8480/XPJ/User/getToken'

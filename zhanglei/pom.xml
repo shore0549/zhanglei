@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.3.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.wechat</groupId>
+    <artifactId>bills</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+     <packaging>war</packaging>
+    <name>bills</name>
+    <description>微信账单</description>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <fastjson.version>1.2.45</fastjson.version>
+        <mybatis.version>1.3.1</mybatis.version>
+        <swagger.version>2.9.2</swagger.version>
+        <mysql.version>5.1.44</mysql.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
+        <!--非系统包-->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>${mybatis.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
+        <!-- springboot与mybatis generator的集成 -->
+        <dependency>
+            <groupId>org.mybatis.generator</groupId>
+            <artifactId>mybatis-generator-core</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+        <!-- office文档处理 -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.14</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.14</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.jxls</groupId>
+            <artifactId>jxls-core</artifactId>
+            <version>0.9.9</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-beanutils</artifactId>
+                    <groupId>commons-beanutils</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>commons-logging</artifactId>
+                    <groupId>commons-logging</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>poi</artifactId>
+                    <groupId>org.apache.poi</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+        <!-- 验证框架 -->
+        <dependency>
+            <groupId>net.sf.oval</groupId>
+            <artifactId>oval</artifactId>
+            <version>1.90</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.8.1</version>
+        </dependency>
+        <!-- springboot与swagger2的集成_Begin -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swagger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swagger.version}</version>
+        </dependency>
+        <!-- springboot与swagger2的集成_End -->
+
+        <!--导入配置文件处理器，配置文件进行绑定就会有提示-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+        </dependency>
+         <!--获取浏览器手机型号-->
+        <dependency>
+            <groupId>eu.bitwalker</groupId>
+            <artifactId>UserAgentUtils</artifactId>
+            <version>1.20</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <!--这鬼没用啊，mapper文件还是扫描不到-->
+        <!--<resources>-->
+            <!--<resource>-->
+                <!--<directory>src/main/resources</directory>-->
+                <!--<filtering>true</filtering>-->
+            <!--</resource>-->
+        <!--</resources>-->
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+</project>

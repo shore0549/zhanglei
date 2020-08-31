@@ -1,0 +1,56 @@
+﻿1，git branch -D master_agent  删除本地分支，并没有删除远程分支。
+    git push origin --delete test  删除远程分支test。 
+
+
+
+2，必须先git clone后，才会有本地仓库。git init,  会看到.git的文件夹（可能被隐藏，此时要打开操作系统的隐藏设置）
+然后先 git checkout切换到某个本地分支
+再用git checkout -b elephone创建新分支
+然后用 git push origin master_agent_elephone   把当前分支压到远程服务器
+
+
+3，git log  查看日志,  git log --name-only 查看哪些文件被改变了。
+
+
+
+4，git branch 查看当前所有本地分支。
+5，git branch -a 查看服务器所有分支，*代表当前所处分支。
+
+
+6，git checkout -b master_agent_elephone origin/master_agent 从服务器上拉取master_agent 分支到本地master_agent_elephone 
+7，git status查看当前状况
+
+
+8，
+git reflog 它会记录所有HEAD的历史
+git reset --hard * 复位到某个版本
+再次执行ls操作，可以查看当前目录
+
+
+9，按q退回命令，回到基本命令行状态
+
+10，git pull origin elephone 更新代码
+       git add .
+      git commit -m "提交代码到本地"
+      git push origin master_agent_elephone 压到服务器
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
